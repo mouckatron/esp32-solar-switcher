@@ -1,0 +1,73 @@
+<html>
+  <head>
+    <title>Solar Switcher</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      html {{
+        width: 400px;
+        font-family: sans-serif;
+        font-size: 10px;
+      }}
+      .relay h3 {{
+        font-size: 200%;
+        padding: 4px 0;
+        background-color: #aaa;
+        text-align: center;
+        color: #fff;
+      }}
+      .relay {{
+        text-align: center;
+      }}
+      .relay button {{
+        font-size: 500%;
+      }}
+      .relay button.on {{
+        background-color: #6c6
+      }}
+    </style>
+  </head>
+  <body>
+    <section>
+      <div class="relay">
+        <h3>Panel 1</h3>
+        <button name="panel1" value="off">Shed</button>
+        <button name="panel1" value="on">House</button>
+      </div>
+      <div class="relay">
+        <h3>Panel 2</h3>
+        <button name="panel2" value="off">Shed</button>
+        <button name="panel2" value="on">House</button>
+      </div>
+      <div class="relay">
+        <h3>Panel 3</h3>
+        <button name="panel3" value="off">Shed</button>
+        <button name="panel3" value="on">House</button>
+      </div>
+      <div class="relay">
+        <h3>Panel 4</h3>
+        <button name="panel4" value="off">Shed</button>
+        <button name="panel4" value="on">House</button>
+      </div>
+    </section>
+  </body>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+  <script>
+   $('button').on("click", function(e){{
+     $.get("/api/"+e.target.name+"/"+e.target.value, function(){{
+       $("button[name="+e.target.name+"]").removeClass()
+       e.target.classList.add("on")
+     }})
+   }});
+   function loadStatus(){{
+     $.get("/api/status", function(result){{
+       console.log(result)
+       for(x in result){{
+         $("button[name="+x+"][value=off]").addClass(result[x]==1 ? "on" : "")
+         $("button[name="+x+"][value=on]" ).addClass(result[x]==0 ? "on" : "")
+       }}
+     }})
+   }}
+   loadStatus()
+  </script>
+</html>
